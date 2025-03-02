@@ -1,12 +1,20 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image, UnidentifiedImageError
 from torchvision import models
 import io
 import torch
 import torchvision.transforms as transforms
 
-
 app = FastAPI()
+
+# Enable CORS for frontend app
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 # Load the trained model
 MODEL_PATH = "models/medical_trash_classifier.pth"
