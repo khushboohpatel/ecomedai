@@ -9,7 +9,7 @@ import io
 app = FastAPI()
 
 # ✅ Load the trained model
-MODEL_PATH = "resnet50_waste_classifier_7_classes.pth"
+MODEL_PATH = "models/resnet50_waste_classifier_7_classes.pth"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = models.resnet50()
@@ -20,7 +20,7 @@ model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
 model.eval()  # Set model to evaluation mode
 model.to(device)
 
-# ✅ Define class labels
+# ✅ Define class labels (7-Class Model)
 classes = [
     "General Waste - Metal & Glass",
     "General Waste - Organic",
@@ -30,6 +30,17 @@ classes = [
     "Pathological Waste",
     "Sharps Waste"
 ]
+
+# ✅ Define 4-Class Biomedical Waste Mapping
+biomedical_mapping = {
+    "Pathological Waste": "Red",
+    "Infectious Waste": "Red",
+    "General Waste - Organic": "Grey",
+    "General Waste - Paper": "Grey",
+    "General Waste - Plastic": "Blue",
+    "General Waste - Metal & Glass": "Blue",
+    "Sharps Waste": "White"
+}
 
 # ✅ Define image transformations (same as during training)
 transform = transforms.Compose([
@@ -53,7 +64,12 @@ async def predict_image(file: UploadFile = File(...)):
             _, predicted = torch.max(output, 1)
 
         predicted_class = classes[predicted.item()]
-        return {"prediction": predicted_class}
+        mapped_category = biomedical_mapping.get(predicted_class, "Unknown Category")
+
+        return {
+            "prediction": predicted_class,
+            "mapped_biomedical_category": mapped_category
+        }
 
     except Exception as e:
         return {"error": str(e)}
