@@ -4,13 +4,13 @@ from recommender import process_bom_items
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from io import BytesIO
 import os
 import json
 import logging
 import argparse
 import uvicorn
-
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -27,9 +27,17 @@ logger.info("LLM initialized successfully")
 DB_CSV_PATH = os.path.join("data", "healthcare_lca_master_data.csv")
 
 app = FastAPI(
-    title="BOM Processing API",
+    title="EcoMedAI - BOM Processing API",
     description="API to process BOM items and return carbon footprint analysis",
     version="1.0"
+)
+
+# Enable CORS for frontend app
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 @app.post("/process")
