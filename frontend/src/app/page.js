@@ -1,30 +1,46 @@
 "use client";
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from "react";
 import { LineChart } from "@mui/x-charts/LineChart";
 import Link from "next/link";
 import "./dashboard.css";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { PieChart, Pie, Cell, Text } from 'recharts';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import { PieChart, Pie, Cell, Text } from "recharts";
 
 const RechartsGradientChart = (props) => {
   return (
     <div className="dashCards lineCard">
       <h3>{props.title}</h3>
-      <div style={{ width: '100%', height: 200}}>
+      <div style={{ width: "100%", height: 200 }}>
         <ResponsiveContainer>
-          <AreaChart data={props.data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          <AreaChart
+            data={props.data}
+            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          >
             <defs>
               <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#25CD25" stopOpacity={0.4}/>
-                <stop offset="99.59%" stopColor="#25CD25" stopOpacity={0}/>
+                <stop offset="0%" stopColor="#25CD25" stopOpacity={0.4} />
+                <stop offset="99.59%" stopColor="#25CD25" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Area type="monotone" dataKey="value" stroke="#25CD25" fill="url(#colorGradient)" />
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#25CD25"
+              fill="url(#colorGradient)"
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -32,14 +48,20 @@ const RechartsGradientChart = (props) => {
   );
 };
 
-const RechartsGauge = ({ value = 75, min = 0, max = 100, startAngle = 360, endAngle = 0 }) => {
+const RechartsGauge = ({
+  value = 75,
+  min = 0,
+  max = 100,
+  startAngle = 360,
+  endAngle = 0,
+}) => {
   const percentage = Math.min(Math.max(value, min), max);
-  
+
   const data = [
-    { name: 'value', value: percentage },
-    { name: 'empty', value: max - percentage },
+    { name: "value", value: percentage },
+    { name: "empty", value: max - percentage },
   ];
-  
+
   const renderCustomizedLabel = ({ cx, cy }) => {
     return (
       <text
@@ -54,9 +76,9 @@ const RechartsGauge = ({ value = 75, min = 0, max = 100, startAngle = 360, endAn
       </text>
     );
   };
-  
+
   return (
-    <div style={{ width: '100%', height: '300px' }}>
+    <div style={{ width: "100%", height: "300px" }}>
       <ResponsiveContainer>
         <PieChart>
           <Pie
@@ -164,39 +186,50 @@ export default function Home() {
           <h3>Other departments reducing waste</h3>
           <ul>
             <li>
-              <img src="/assets/images/building.png" alt="Department 1 logo" /> Department 1
+              <img src="/assets/images/building.png" alt="Department 1 logo" />{" "}
+              Department 1
             </li>
             <li>
-              <img src="/assets/images/building.png" alt="Department 2 logo" /> Department 2
+              <img src="/assets/images/building.png" alt="Department 2 logo" />{" "}
+              Department 2
             </li>
             <li>
-              <img src="/assets/images/building.png" alt="Department 3 logo" /> Department 3
+              <img src="/assets/images/building.png" alt="Department 3 logo" />{" "}
+              Department 3
             </li>
             <li>
-              <img src="/assets/images/building.png" alt="Department 4 logo" /> Department 4
+              <img src="/assets/images/building.png" alt="Department 4 logo" />{" "}
+              Department 4
             </li>
             <li>
-              <img src="/assets/images/building.png" alt="Department 5 logo" /> Department
+              <img src="/assets/images/building.png" alt="Department 5 logo" />{" "}
+              Department
             </li>
           </ul>
         </div>
         <div>
-        <RechartsGradientChart title="Cost Saved" data={[
-  { name: '2020', value: 2 },
-  { name: '2021', value: 5.5 },
-  { name: '2022', value: 2 },
-  { name: '2023', value: 8.5 },
-  { name: '2024', value: 1.5 },
-  { name: '2025', value: 5 },
-]}/>
-        <RechartsGradientChart title="Carbon Reduced" data={[
-  { name: '2020', value: 10 },
-  { name: '2021', value: 85 },
-  { name: '2022', value: 100 },
-  { name: '2023', value: 150 },
-  { name: '2024', value: 175 },
-  { name: '2025', value: 205 },
-]}/>
+          <RechartsGradientChart
+            title="Cost Saved"
+            data={[
+              { name: "2020", value: 2 },
+              { name: "2021", value: 5.5 },
+              { name: "2022", value: 2 },
+              { name: "2023", value: 8.5 },
+              { name: "2024", value: 1.5 },
+              { name: "2025", value: 5 },
+            ]}
+          />
+          <RechartsGradientChart
+            title="Carbon Reduced"
+            data={[
+              { name: "2020", value: 10 },
+              { name: "2021", value: 85 },
+              { name: "2022", value: 100 },
+              { name: "2023", value: 150 },
+              { name: "2024", value: 175 },
+              { name: "2025", value: 205 },
+            ]}
+          />
         </div>
       </div>
     </div>
