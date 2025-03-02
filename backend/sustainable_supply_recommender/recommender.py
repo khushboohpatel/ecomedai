@@ -33,7 +33,7 @@ def process_bom_items(bom_df: pd.DataFrame, db_df: pd.DataFrame, vectorstore, ll
         try:
             candidates = query_similar_items(vectorstore, bomItem)
             llm_result = rerank_with_llm(bomItem, candidates, llm)
-            matched_item = llm_result.get("matchedItem")
+            matched_item = llm_result.get("matched_item")
             equivalent_items = llm_result.get("equivalent_items", [])
 
             # Compute alternate items based on carbon footprint criteria
