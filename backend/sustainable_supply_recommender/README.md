@@ -36,7 +36,7 @@ source venv/bin/activate
 
 ### **3️. Install Dependencies**
 ```bash
-pip install fastapi uvicorn pandas python-dotenv langchain_huggingface langchain_community langchain_google_genai
+pip install fastapi uvicorn pandas python-dotenv langchain_huggingface langchain_community langchain_google_genai faiss faiss-gpu faiss-cpu
 ```
 
 ### **4. Set Up Environment Variables**
