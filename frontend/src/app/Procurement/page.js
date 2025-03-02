@@ -61,9 +61,30 @@ export default function ProcurementPage() {
         const generatedColumns = [
           { field: "product", headerName: "Item Name", width: 300 },
           { field: "functionalUnit", headerName: "Unit", width: 150 },
-          { field: "globalFootprintPerUnit", headerName: "Carbon Footprint per Unit", width: 200, valueFormatter: ({ value }) => (value !== undefined ? value.toFixed(3) : value) },
-          { field: "totalGlobalFootprint", headerName: "Total Carbon Footprint", width: 200, valueFormatter: ({ value }) => (value !== undefined ? value.toFixed(3) : value) },
-          { field: "totalPrice", headerName: "Price", width: 150, valueFormatter: ({ value }) => (value !== undefined ? value.toFixed(3) : value) },
+          {
+            field: "globalFootprintPerUnit",
+            headerName: "Carbon Footprint per Unit",
+            width: 200,
+            renderCell: (params) => (
+              <span>{params.value.toFixed(2)} KgCO<sub>2</sub>e</span>
+            ),
+          },
+          {
+            field: "totalGlobalFootprint",
+            headerName: "Total Carbon Footprint",
+            width: 200,
+            renderCell: (params) => (
+              <span>{params.value.toFixed(2)} KgCO<sub>2</sub>e</span>
+            ),
+          },
+          {
+            field: "totalPrice",
+            headerName: "Price",
+            width: 150,
+            renderCell: (params) => (
+              <span>${params.value.toFixed(2)}</span>
+            ),
+          },
         ];
 
         setRows(mappedRows);
@@ -109,7 +130,7 @@ export default function ProcurementPage() {
         <div className="loading-container">
           <CircularProgress />
           <p style={{ marginTop: "1em" }}>
-            Processing your file. This may take up to 5 minutes...
+            Processing your file. This may take up to a minute...
           </p>
         </div>
       )}
