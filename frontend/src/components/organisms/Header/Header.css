@@ -29,6 +29,10 @@ header.mainHeader .headMenu a:hover{
 color: var(--primColor)
 }
 
+header.mainHeader .headMenu a.active{
+color: var(--primColor)
+}
+
 header.mainHeader .headLogo img{
     height: 40px;
 }

@@ -1,0 +1,42 @@
+.procurementPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2em;
+    flex-direction: column;
+}
+.procurementHeading {
+    color: #333;
+    text-align: center;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    margin-top: 20px;
+}
+.desc {
+    color: #333;
+    margin: 5px 0 40px;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+}
+.fileUpload{
+    margin-top: 1em;
+    cursor: pointer;
+}
+.uploadIcon{
+    cursor: pointer;
+    height: 500px;
+    width: 500px;
+}
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    flex-direction: column;
+    margin-bottom: 1em;
+}
