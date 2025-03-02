@@ -58,6 +58,15 @@
   margin-bottom: 4px;
 }
 
+.dashboard .dashCards.gaugeCard{
+    max-height: 300px;
+    min-height: initial;
+}
+
+/* .dashboard .dashCards.gaugeCard svg{
+    height: 300px;
+} */
+
 .dashboard .impactBadges {
   display: flex;
   gap: 30px;
@@ -104,6 +113,7 @@
 .dashboard .dashCardsBottom ul li {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
   gap: 16px;
   padding: 16px;
   color: #131313;
@@ -120,7 +130,14 @@
 }
 
 .dashboard .dashCardsBottom ul li img {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   object-fit: cover;
+  background: #ebe8e8;
+  border-radius: 30px;
+  padding: 4px;
+}
+
+.dashboard .dashCards.lineCard:not(:last-child){
+    margin-bottom: 16px;
 }
