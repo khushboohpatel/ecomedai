@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
 }
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primColor: #58907F
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -20,7 +21,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Helvetica, sans-serif;
 }
 
 .customContainer {

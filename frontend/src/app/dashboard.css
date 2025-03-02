@@ -1,0 +1,126 @@
+.dashboard .dashCardsTop {
+  display: grid;
+  grid-template-columns: 35% 20% auto;
+  gap: 16px;
+  height: max-content;
+}
+
+.dashboard .dashCards {
+  display: flex;
+  min-width: 320px;
+  min-height: 200px;
+  padding: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 16px;
+  border: 1px solid #e3e3e3;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.dashboard .dashCards h3 {
+  color: #131313;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.dashboard .dashCards h2 {
+  color: #131313;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.2px;
+}
+
+.dashboard .dashCards p {
+  color: #454545;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.dashboard .dashCards a {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-top: 16px;
+  gap: 8px;
+  flex: 1 0 0;
+  color: var(--primColor);
+}
+
+.dashboard .dashCards a svg {
+  margin-bottom: 4px;
+}
+
+.dashboard .impactBadges {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.dashboard .impactBadges img {
+  width: 112px;
+  height: 115px;
+  aspect-ratio: 112/115;
+}
+
+.dashboard .impactBadges img:not(:first-child) {
+  filter: grayscale(100%);
+}
+
+.dashboard .dashGauge .MuiGauge-valueArc {
+  fill: #18c362;
+}
+
+.dashboard .dashGauge .MuiGauge-referenceArc {
+  fill: #a2f1c4;
+}
+
+.dashboard .gaugeCard h3,
+.dashboard .gaugeCard a {
+  width: 100%;
+  text-align: center;
+}
+
+.dashboard .dashCardsBottom {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: calc(55% + 16px) auto;
+  gap: 16px;
+}
+
+.dashboard .dashCardsBottom ul {
+  padding: 0;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.dashboard .dashCardsBottom ul li {
+  display: flex;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 16px;
+  color: #131313;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.3px;
+  border-radius: 16px;
+  width: inherit;
+}
+
+.dashboard .dashCardsBottom ul li:hover {
+  background: #f9fafa;
+}
+
+.dashboard .dashCardsBottom ul li img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
