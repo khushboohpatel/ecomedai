@@ -3,10 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image, UnidentifiedImageError
 from torchvision import models
 import io
+import os
 import torch
 import torchvision.transforms as transforms
 
-app = FastAPI()
+app = FastAPI(
+    title="EcoMedAI - Medical Trash Classifier API",
+    description="API to process medical waste images and classify them into categories",
+    version="1.0"
+)
 
 # Enable CORS for frontend app
 app.add_middleware(
@@ -16,8 +21,11 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+# Calculate the directory where this script resides
+current_dir = os.path.dirname(os.path.abspath(__file__))
 # Load the trained model
-MODEL_PATH = "models/medical_trash_classifier.pth"
+MODEL_PATH = os.path.join(current_dir, "models", "medical_trash_classifier.pth")
+
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = models.resnet50()

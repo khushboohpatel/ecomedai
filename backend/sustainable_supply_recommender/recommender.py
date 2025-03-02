@@ -1,6 +1,6 @@
-from utils.vectorstore_utils import query_similar_items
-from utils.llm_utils import rerank_with_llm
-from utils.carbon_utils import get_carbon_footprint
+from .utils.vectorstore_utils import query_similar_items
+from .utils.llm_utils import rerank_with_llm
+from .utils.carbon_utils import get_carbon_footprint
 from typing import Dict
 import logging
 import pandas as pd

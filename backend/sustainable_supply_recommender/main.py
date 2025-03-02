@@ -1,6 +1,6 @@
-from data_loader import load_data, CARBON_FOOTPRINT_COLUMN, load_db_data
-from utils.vectorstore_utils import create_vectorstore
-from recommender import process_bom_items
+from .data_loader import load_db_data
+from .utils.vectorstore_utils import create_vectorstore
+from .recommender import process_bom_items
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, HTTPException
@@ -23,13 +23,7 @@ load_dotenv()
 # Globals to hold heavy initializations
 global_db_df = None
 global_vectorstore = None
-
-# Initialize LLM
-llm = ChatGoogleGenerativeAI(model='gemini-2.0-flash')
-logger.info("LLM initialized successfully")
-
-# Define the fixed path for the Database CSV file
-DB_CSV_PATH = os.path.join("data", "healthcare_lca_master_data.csv")
+llm = None
 
 app = FastAPI(
     title="EcoMedAI - BOM Processing API",
@@ -45,22 +39,20 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-@app.on_event("startup")
-async def startup_event():
+async def initialize_supply_resources():
     """
-    FastAPI startup event that loads the database CSV and creates the vector store.
-    These heavy operations run once on startup.
+    Initialize heavy resources for the supply app (run during startup).
     """
-    global global_db_df, global_vectorstore
+    global global_db_df, global_vectorstore, llm
     try:
-        # Load only the database CSV.
-        # We pass a dummy BytesIO for BOM since load_data expects two arguments.
-        db_df = load_db_data(DB_CSV_PATH)
-        global_db_df = db_df
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        DB_CSV_PATH = os.path.join(current_dir, "data", "healthcare_lca_master_data.csv")
+        global_db_df = load_db_data(DB_CSV_PATH)
         global_vectorstore, _ = create_vectorstore(global_db_df)
-        logger.info("Startup initialization complete: Database and vectorstore loaded.")
+        llm = ChatGoogleGenerativeAI(model='gemini-2.0-flash')
+        logger.info("Supply resources initialized successfully.")
     except Exception as e:
-        logger.error("Error during startup initialization", exc_info=True)
+        logger.error("Error during supply resources initialization", exc_info=True)
         raise e
 
 @app.post("/process")
@@ -143,7 +135,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.mode == "cli":
-        startup_event()
+        initialize_supply_resources()
         run_cli()
     else:
         uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
