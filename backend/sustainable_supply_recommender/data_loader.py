@@ -63,3 +63,22 @@ def load_data(bom_source: Union[str, IO], db_source: Union[str, IO]) -> Tuple[pd
     except Exception as e:
         logger.error(f"Error loading CSV files: {str(e)}", exc_info=True)
         raise
+
+def load_db_data(db_source: Union[str, IO]) -> pd.DataFrame:
+    """
+    Load only the Database CSV file into a pandas DataFrame.
+    This function is used for heavy startup initialization.
+    """
+    try:
+        db_df = _read_csv(db_source)
+        if 'Product or process' in db_df.columns:
+            db_df.rename(columns={'Product or process': 'product_name'}, inplace=True)
+        if 'product_name' not in db_df.columns:
+            raise ValueError("Database CSV must contain 'product_name' column")
+        if CARBON_FOOTPRINT_COLUMN not in db_df.columns:
+            raise ValueError(f"Database CSV must contain '{CARBON_FOOTPRINT_COLUMN}' column")
+        logger.info("Database loaded successfully")
+        return db_df
+    except Exception as e:
+        logger.error(f"Error loading database CSV file: {e}", exc_info=True)
+        raise
