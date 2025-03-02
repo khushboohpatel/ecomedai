@@ -191,7 +191,7 @@ for epoch in range(num_epochs):
 
 # Save the trained model
 os.makedirs("models", exist_ok=True)
-model_save_path = "models/resnet50_waste_classifier_7_classes.pth"
+model_save_path = "models/medical_trash_classifier.pth"
 torch.save(model.state_dict(), model_save_path)
 print(f"Model training completed and saved at {model_save_path}")
 
