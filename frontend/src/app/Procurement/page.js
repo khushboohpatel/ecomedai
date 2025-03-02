@@ -49,17 +49,22 @@ export default function ProcurementPage() {
       }
 
       if (items.length > 0) {
-        const firstItem = items[0];
-        const generatedColumns = Object.keys(firstItem).map((key) => ({
-          field: key,
-          headerName: key,
-          width: 150,
+        const mappedRows = items.map((item, idx) => ({
+          id: idx + 1,
+          product: item.matchedItem,
+          functionalUnit: item.quantity,
+          globalFootprintPerUnit: Number(item.matchedItemCarbonFootprint.toFixed(3)),
+          totalGlobalFootprint: Number(item.totalMatchedItemCarbonFootprint.toFixed(3)),
+          totalPrice: Number(item.totalPrice.toFixed(3)),
         }));
 
-        const mappedRows = items.map((obj, idx) => ({
-          id: idx + 1,
-          ...obj,
-        }));
+        const generatedColumns = [
+          { field: "product", headerName: "Item Name", width: 300 },
+          { field: "functionalUnit", headerName: "Unit", width: 150 },
+          { field: "globalFootprintPerUnit", headerName: "Carbon Footprint per Unit", width: 200, valueFormatter: ({ value }) => (value !== undefined ? value.toFixed(3) : value) },
+          { field: "totalGlobalFootprint", headerName: "Total Carbon Footprint", width: 200, valueFormatter: ({ value }) => (value !== undefined ? value.toFixed(3) : value) },
+          { field: "totalPrice", headerName: "Price", width: 150, valueFormatter: ({ value }) => (value !== undefined ? value.toFixed(3) : value) },
+        ];
 
         setRows(mappedRows);
         setColumns(generatedColumns);
