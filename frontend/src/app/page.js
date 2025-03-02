@@ -186,24 +186,24 @@ export default function Home() {
           <h3>Other departments reducing waste</h3>
           <ul>
             <li>
-              <img src="/assets/images/building.png" alt="Department 1 logo" />{" "}
-              Department 1
+              <img src="/assets/images/building.png" alt="Emergency Department (ED) logo" />{" "}
+              Emergency Department (ED)
             </li>
             <li>
-              <img src="/assets/images/building.png" alt="Department 2 logo" />{" "}
-              Department 2
+              <img src="/assets/images/building.png" alt="Intensive Care Unit (ICU) logo" />{" "}
+              Intensive Care Unit (ICU)
             </li>
             <li>
-              <img src="/assets/images/building.png" alt="Department 3 logo" />{" "}
-              Department 3
+              <img src="/assets/images/building.png" alt="Radiology logo" />{" "}
+              Radiology
             </li>
             <li>
-              <img src="/assets/images/building.png" alt="Department 4 logo" />{" "}
-              Department 4
+              <img src="/assets/images/building.png" alt="Surgery Department logo" />{" "}
+              Surgery Department
             </li>
             <li>
-              <img src="/assets/images/building.png" alt="Department 5 logo" />{" "}
-              Department
+              <img src="/assets/images/building.png" alt="Pediatrics logo" />{" "}
+              Pediatrics Department
             </li>
           </ul>
         </div>

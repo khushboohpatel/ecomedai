@@ -154,7 +154,7 @@ const SustainableCoach = () => {
           <h3>This is a {prediction?.prediction}</h3>
           <h4>
             It should go into a{" "}
-            <span style={{ color: prediction?.mapped_biomedical_category }}>
+            <span style={{ color: prediction?.mapped_biomedical_category === 'White' ? "inherit" : prediction?.mapped_biomedical_category }}>
               {prediction?.mapped_biomedical_category}
             </span>
             coloured trash bin.
