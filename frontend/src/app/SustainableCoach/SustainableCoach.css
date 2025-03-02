@@ -6,6 +6,48 @@
   cursor: pointer;
 }
 
+.uploadSection .uploadBtn {
+  width: max-content;
+  height: 45px;
+  padding: 15px;
+  font-weight: 500;
+  border: 1px solid #58907f;
+  color: #58907f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin: -20px auto 20px;
+  cursor: pointer;
+}
+
+.uploadSection .uploadBtn:hover{
+  background: #58907f;
+  color: #fff;
+}
+
+.susCoachTop {
+  margin: 45px 0;
+}
+
+.susCoachTop h1 {
+  color: #333;
+  text-align: center;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 30px */
+}
+
+.susCoachTop p {
+  color: #333;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+}
+
 .trashBinsCnt {
   display: flex;
   justify-content: center;
@@ -22,21 +64,100 @@
   object-fit: contain;
 }
 
-.trashBinsCnt .trashBin{
-filter: grayscale(100%);
-opacity: 0.2;
+.trashBinsCnt .trashBin {
+  filter: grayscale(100%);
+  opacity: 0.2;
 }
 
-.trashBinsCnt .trashBin.active{
-    background: #fff;
-    margin: 5px 0;
-    border-radius: 10px;
-    filter: none;
-    opacity: 1;
+.trashBinsCnt .trashBin.active {
+  background: #fff;
+  margin: 5px 0;
+  border-radius: 10px;
+  filter: none;
+  opacity: 1;
+  position: relative;
 }
 
-.trashBinsCnt .trashBin{
-    width: 120px;
+.trashBinsCnt .trashBin.active::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 48%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 20px solid #0000;
+  border-right: 20px solid #0000;
+  border-top: 20px solid #f4f6fc;
+}
+
+.trashBinsCnt .trashBin {
+  width: 120px;
   padding: 15px;
+}
 
+.predictionResults {
+  margin-bottom: 30px;
+}
+
+.predictionResults .predictionInfo {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 30px;
+}
+
+.predictionResults h3 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  margin-top: 50px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.predictionResults h4 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.predictionResults h4 span {
+  padding-right: 5px;
+}
+
+.predictionInfo .predictionDetails * {
+  text-align: left;
+}
+
+.predictionInfo .predictionDetails h4 {
+  font-size: 16px;
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+.predictionInfo .predictionDetails p,
+.predictionInfo .predictionDetails li {
+  font-size: 14px;
+}
+
+.predictionDetails div > div {
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 0;
+  background: linear-gradient(to right, rgb(244, 246, 252), rgb(255, 255, 255));
+  /* border-top: 1px dotted #ccc; */
+}
+
+.predictionDetails div > div:nth-child(2n + 1) {
+  /* padding: 10px;
+  border-radius: 10px;
+  background: #ccc; */
+}
+
+.predictionImage img {
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
 }
