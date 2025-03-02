@@ -1,26 +1,29 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from PIL import Image, UnidentifiedImageError
+from torchvision import models
+import io
 import torch
 import torchvision.transforms as transforms
-from torchvision import models
-from PIL import Image
-import io
 
-# ✅ Initialize FastAPI
+
 app = FastAPI()
 
-# ✅ Load the trained model
-MODEL_PATH = "models/resnet50_waste_classifier_7_classes.pth"
+# Load the trained model
+MODEL_PATH = "models/medical_trash_classifier.pth"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = models.resnet50()
 num_features = model.fc.in_features
-model.fc = torch.nn.Linear(num_features, 7)  # Ensure correct number of classes
+model.fc = torch.nn.Linear(num_features, 7)
 
-model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
-model.eval()  # Set model to evaluation mode
-model.to(device)
+try:
+    model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
+    model.eval()
+    model.to(device)
+except Exception as e:
+    raise RuntimeError(f"Error loading model: {str(e)}")
 
-# ✅ Define class labels (7-Class Model)
+# Define class labels (7-Class Model)
 classes = [
     "General Waste - Metal & Glass",
     "General Waste - Organic",
@@ -31,7 +34,7 @@ classes = [
     "Sharps Waste"
 ]
 
-# ✅ Define 4-Class Biomedical Waste Mapping
+# Define 4-Class Biomedical Waste Mapping
 biomedical_mapping = {
     "Pathological Waste": "Red",
     "Infectious Waste": "Red",
@@ -42,7 +45,7 @@ biomedical_mapping = {
     "Sharps Waste": "White"
 }
 
-# ✅ Define image transformations (same as during training)
+# Define image transformations (same as during training)
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.CenterCrop(224),
@@ -50,15 +53,28 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
 ])
 
-# ✅ Define the API route for image prediction
+
 @app.post("/predict/")
 async def predict_image(file: UploadFile = File(...)):
-    try:
-        # ✅ Read and preprocess the image
-        image = Image.open(io.BytesIO(await file.read())).convert("RGB")
-        image = transform(image).unsqueeze(0).to(device)  # Add batch dimension
+    """
+    API endpoint for predicting the waste category from an image.
 
-        # ✅ Make prediction
+    Args:
+        file (UploadFile): The uploaded image file.
+
+    Returns:
+        dict: A dictionary containing the predicted category and mapped biomedical category.
+    """
+    try:
+        # Ensure the file is an image
+        if not file.filename.lower().endswith(("png", "jpg", "jpeg", "bmp", "tiff")):
+            raise HTTPException(status_code=400, detail="Invalid file format. Please upload an image.")
+
+        # Read and preprocess the image
+        image = Image.open(io.BytesIO(await file.read())).convert("RGB")
+        image = transform(image).unsqueeze(0).to(device)
+
+        # Make prediction
         with torch.no_grad():
             output = model(image)
             _, predicted = torch.max(output, 1)
@@ -71,8 +87,8 @@ async def predict_image(file: UploadFile = File(...)):
             "mapped_biomedical_category": mapped_category
         }
 
+    except UnidentifiedImageError:
+        raise HTTPException(status_code=400, detail="Uploaded file is not a valid image.")
     except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
-# ✅ Run the API using:
-# uvicorn app:app --host 0.0.0.0 --port 8000
