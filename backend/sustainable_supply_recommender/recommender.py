@@ -12,7 +12,7 @@ def process_bom_items(bom_df: pd.DataFrame, db_df: pd.DataFrame, vectorstore, ll
     Process BOM items by matching them against the vectorstore and suggesting sustainable alternatives.
 
     Args:
-        bom_df (pd.DataFrame): BOM DataFrame with product names and quantities.
+        bom_df (pd.DataFrame): BOM DataFrame with product names, quantities, and unit prices.
         db_df (pd.DataFrame): Database DataFrame with product names and carbon footprint values.
         vectorstore: Pre-built FAISS vector store.
         llm: Initialized LLM instance.
@@ -28,6 +28,9 @@ def process_bom_items(bom_df: pd.DataFrame, db_df: pd.DataFrame, vectorstore, ll
     for _, row in bom_df.iterrows():
         bomItem = row["product_name"]
         quantity = row.get("quantity", 1)
+        unit_price = row.get("unit_price", 0.0)
+        total_price = quantity * unit_price
+
         logger.info(f"Processing BOM item: {bomItem}")
 
         try:
@@ -36,7 +39,7 @@ def process_bom_items(bom_df: pd.DataFrame, db_df: pd.DataFrame, vectorstore, ll
             matched_item = llm_result.get("matched_item")
             equivalent_items = llm_result.get("equivalent_items", [])
 
-            # Compute alternate items based on carbon footprint criteria
+            # Compute alternative items based on carbon footprint criteria
             alternate_items = []
             if matched_item and equivalent_items:
                 matched_cf = get_carbon_footprint(db_df, matched_item)
@@ -44,9 +47,11 @@ def process_bom_items(bom_df: pd.DataFrame, db_df: pd.DataFrame, vectorstore, ll
                     if alt != matched_item:
                         alt_cf = get_carbon_footprint(db_df, alt)
                         if 0 < alt_cf < matched_cf:
+                            total_alt_cf = alt_cf * quantity
                             alternate_items.append({
                                 "name": alt,
-                                "carbonFootprint": alt_cf
+                                "carbonFootprint": alt_cf,
+                                "totalAlternateCarbonFootprint": total_alt_cf
                             })
                 alternate_items.sort(key=lambda x: x["carbonFootprint"])
 
@@ -59,6 +64,9 @@ def process_bom_items(bom_df: pd.DataFrame, db_df: pd.DataFrame, vectorstore, ll
                 "matchedItem": matched_item,
                 "matchedItemCarbonFootprint": matched_cf,
                 "totalMatchedItemCarbonFootprint": total_matched_cf_units,
+                "quantity": quantity,
+                "unitPrice": unit_price,
+                "totalPrice": total_price,
                 "alternativeItems": alternate_items
             })
 
@@ -69,6 +77,9 @@ def process_bom_items(bom_df: pd.DataFrame, db_df: pd.DataFrame, vectorstore, ll
                 "matchedItem": None,
                 "matchedItemCarbonFootprint": 0.0,
                 "totalMatchedItemCarbonFootprint": 0.0,
+                "quantity": quantity,
+                "unitPrice": unit_price,
+                "totalPrice": total_price,
                 "alternativeItems": []
             })
 
